@@ -14,10 +14,10 @@ docker-machine ls
 echo ""
 echo ""
 # Initialize  leader
-docker-machine ssh "${MACHINE_PREFIX}1" docker swarm init --advertise-addr $(docker-machine ip lab1)
+docker-machine ssh "${MACHINE_PREFIX}-1" docker swarm init --advertise-addr $(docker-machine ip ${MACHINE_PREFIX}-1)
 
 # Get the join command to apply to others cluster machines
-JOIN_COMMAND=$(docker-machine ssh lab1 docker swarm join-token manager | grep "docker swarm")
+JOIN_COMMAND=$(docker-machine ssh "${MACHINE_PREFIX}-1" docker swarm join-token manager | grep "docker swarm")
 
 # Create swarm workers
 for server in {2..3}; do
@@ -27,4 +27,4 @@ echo ""
 echo ""
 
 # List all swarm nodes
-docker-machine ssh lab1 docker node ls
+docker-machine ssh "${MACHINE_PREFIX}-1" docker node ls
